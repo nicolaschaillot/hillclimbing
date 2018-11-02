@@ -6,8 +6,8 @@ import java.util.Arrays;
 public class User {
 
     private ArrayList<Quantity> initialQuantities = new ArrayList<>(Arrays.asList(
-            new Quantity(13),
-            new Quantity(3)
+            new Quantity(0, "A"),
+            new Quantity(0, "B")
     ));
 
     public static void main(String[] args) {

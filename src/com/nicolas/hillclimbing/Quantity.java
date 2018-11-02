@@ -1,15 +1,24 @@
 package com.nicolas.hillclimbing;
 
+import com.sun.deploy.util.StringUtils;
+
 public class Quantity {
 
     private int value;
     private String unit;
     private int order;
+    private String type;
 
-    public Quantity(int value, String unit, int order) {
+    public Quantity(int value, String unit, int order, String type) {
         this.value = value;
         this.unit = unit;
         this.order = order;
+        this.type = type;
+    }
+
+    public Quantity(int value, String type) {
+        this.value = value;
+        this.type = type;
     }
 
     public Quantity(int value) {
@@ -26,11 +35,19 @@ public class Quantity {
     }
 
     public void increase() {
-        this.value++;
+        if (this.type == "A") {
+            this.value = this.value + 5;
+        } else {
+            this.value++;
+        }
     }
 
     public void decrease() {
-        this.value--;
+        if (this.type == "A") {
+            this.value = this.value - 5;
+        } else {
+            this.value--;
+        }
     }
 
     public int getValue() {
@@ -55,5 +72,13 @@ public class Quantity {
 
     public void setOrder(int order) {
         this.order = order;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

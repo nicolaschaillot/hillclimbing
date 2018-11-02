@@ -2,9 +2,11 @@ package com.nicolas.hillclimbing;
 
 public class HillClimbing {
 
-    public static final int MAX_ITERATION = 50;
+    public static final int MAX_ITERATION = 100;
     public static final int TARGET = 168;
-    public static final int TARGET_ERROR = 10; // error percentage
+    public static final int TARGET_MIN = 163;
+    public static final int TARGET_MAX = 165;
+    public static final int TARGET_ERROR = 1; // 1% error percentage
 
 
     public Combination findBestCombination(Combination currentCombination) {
@@ -16,20 +18,31 @@ public class HillClimbing {
         while (iterToMaximalCount < MAX_ITERATION) {
             adjacentCombination = obtainAdjacentCombination(new Combination(currentCombination));
 
-            int currentGap = Math.abs(currentCombination.getResult() - TARGET);
-            int adjacentGap = Math.abs(adjacentCombination.getResult() - TARGET);
+//            int currentGap = Math.abs(currentCombination.getResult() - TARGET);
+//            int adjacentGap = Math.abs(adjacentCombination.getResult() - TARGET);
+//
+//            System.out.println("currentGap = " + currentGap);
+//            System.out.println("adjacentGap = " + adjacentGap);
+//
+//            System.out.println("  | error => " + currentGap * 100 / TARGET);
 
-            System.out.println("  | error => " + (Math.abs(adjacentGap - TARGET) * 100 / TARGET));
-            if ( (Math.abs(currentGap - TARGET) * 100 / TARGET) < TARGET_ERROR ) {
-                break;
-            }
+//            if (adjacentCombination.getResult() <= 0 ||
+//            adjacentCombination.getResult() < TARGET_MIN ) {
+//
+//            }
 
-            if ( adjacentGap < currentGap ) {
-                compareCombinations = "<= (proceed)";
-                iterToMaximalCount = 0;
+//            if ( adjacentCombination.getResult() > TARGET_MIN &&
+//                    adjacentCombination.getResult() < TARGET_MAX ) {
+//                break;
+//            }
+
+            if ( adjacentCombination.getResult() <= TARGET_MIN ||
+                    adjacentCombination.getResult() >= TARGET_MAX ) {
                 currentCombination = new Combination(adjacentCombination);
+                compareCombinations = currentCombination.getResultString() + " <= (proceed) - iteration # " + iterToMaximalCount++;
             } else {
-                compareCombinations = "> (stay) - iteration # " + iterToMaximalCount++;
+                compareCombinations = currentCombination.getResultString() + " > (stay) - iteration # " + iterToMaximalCount++;
+                break;
             }
             System.out.println("  |" + compareCombinations);
             System.out.println(currentCombination + "  |" + currentCombination.getResultString());
@@ -49,12 +62,18 @@ public class HillClimbing {
         int x = (int) Math.round( Math.random() );
 
         Quantity quantity = combination.getQuantities().get(x);
+//
+//        int y = (int) Math.round( Math.random() );
+//        if (y == 1 || quantity.getValue() == 0) {
+//            quantity.increase();
+//        } else {
+//            quantity.decrease();
+//        }
 
-        int y = (int) Math.round( Math.random() );
-        if (y == 1) {
-            quantity.increase();
-        } else {
+        if (combination.getResult() >= TARGET_MAX && quantity.getValue() > 1) {
             quantity.decrease();
+        } else {
+            quantity.increase();
         }
 
         combination.getQuantities().set(x, quantity);
